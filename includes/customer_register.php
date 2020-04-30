@@ -6,7 +6,7 @@ include("./db.php");
 ?>
 
 <div>
-    <form method="post"action="" encypte="multipart/form-data">
+    <form method="post" action="" encypte="multipart/form-data">
         <table width="500" align="center" bgcolor="skyblue">
             <tr>
                 <td><h2>Create an Account</h2></td>
@@ -30,6 +30,11 @@ include("./db.php");
             <tr>
                 <td>Address:</td>
                 <td><input type="text" name="c_address" placeholder="enter address"></td>
+            </tr>
+
+            <tr>
+                <td>Contact:</td>
+                <td><input type="text" name="c_contact" placeholder="enter address"></td>
             </tr>
 
             <tr>
@@ -59,18 +64,19 @@ include("./db.php");
             </tr>
 
             <tr>
-                <td><input type="submit" name="login" value="Login"></td>
+                <td><input type="submit" name="register" value="Register"></td>
             </tr>        
         </table>
         
         <center>
             <a href="customer_register.php">Register here</a>
-        </center>
+        </center>   
     </form>
 </div>
 
 <?php 
     if(isset($_POST['register'])) {
+        
 
         $ip = getIp();
 
@@ -83,11 +89,16 @@ include("./db.php");
         $c_contact = $_POST['c_contact']; 
         $c_image = $_FILES['c_image']['tmp_name'];
 
-        move_uploaded_file($c_image_tml, "customer/customer_images/$c_image");
+        move_uploaded_file($c_image_tmp, "../customer/customer_images/$c_image");
 
-        $insert_c = "insert into customers (customer_ip, customer_name, customer_email, 
-        customer_password, customer_city, customer_country, customer_address, customer_contact ) values 
-        ('$ip', '$c_name', '$c_email', '$c_password', '', '', '', '', '')";
+        $insert_c = "insert into customers (customer_ip, customer_name, customer_email, customer_pass, customer_city, customer_country, customer_address, customer_contact, c_image ) values ('$ip', '$c_name', '$c_email', '$c_password', '$c_city', '$c_country', '$c_address', '$c_contact', '$c_image')";
 
+        var_dump($insert_c);
+
+        $run_c = mysqli_query($con, $insert_c);
+
+        if($run_c) {
+            echo "<script>alert('Added');</script>";
+        }
 
     }
